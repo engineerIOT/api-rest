@@ -37,8 +37,9 @@ public class PaisResource {
 
 	/**
 	 * Metodo que retorna uma lista de paises
+	 * 
 	 * @param tokenStr
-	 * @return
+	 * @return List<Pais>
 	 * @throws Exception
 	 */
 	@GetMapping("/pais/listar/{token}")
@@ -68,55 +69,8 @@ public class PaisResource {
 	}
 
 	/**
-	 * Metodo que verifica a validade do token caso token expirado retorna true
-	 * 
-	 * @param tokenStr
-	 * @return boolean
-	 */
-	private boolean verificaValidadeToken(String tokenStr) {
-		Token token = tokenRepository.findByToken(tokenStr);
-		if (token != null) {
-			return new Date().after(Utils.getDataIncrementada5Min(token.getExpiracao()));
-		}
-		return false;
-	}
-
-	@GetMapping("/pais/listar2/{token}")
-	@ApiOperation(value = "Retorna uma lista de paises")
-	public List<Pais> listar2(@PathVariable(value = "token") String tokenStr) throws Exception {
-		List<Pais> listPaises = new ArrayList<>();
-
-		try {
-			// se token valido, listar paises
-			if (!verificaValidadeToken(tokenStr)) {
-				listPaises = paisRepository.findAll();
-			}
-		} catch (Exception e) {
-			throw new Exception("Erro ao listar paises.");
-		}
-		return listPaises;
-	}
-
-	@GetMapping("/pais/listar3/{token}")
-	@ApiOperation(value = "Retorna uma lista de paises")
-	public List<Pais> listar3(@PathVariable(value = "token") String tokenStr) throws Exception {
-		List<Pais> listPaises = new ArrayList<>();
-
-		try {
-			boolean tokenExpirado = verificaValidadeToken(tokenStr);
-
-			// se token valido, listar paises
-			if (!tokenExpirado) {
-				listPaises = paisRepository.findAll();
-			}
-		} catch (Exception e) {
-			throw new Exception("Erro ao listar paises.");
-		}
-		return listPaises;
-	}
-
-	/**
 	 * Metodo que persiste um pais no banco de dados
+	 * 
 	 * @param pais
 	 * @param tokenStr
 	 * @return Pais
@@ -150,6 +104,7 @@ public class PaisResource {
 
 	/**
 	 * Metodo que pesquisa um pais de acordo com o nome passado como parametro
+	 * 
 	 * @param nome
 	 * @param tokenStr
 	 * @return List<Pais
@@ -186,6 +141,7 @@ public class PaisResource {
 
 	/**
 	 * Metodo que exclui um pais de acordo com o id passado como parametro
+	 * 
 	 * @param id
 	 * @param tokenStr
 	 * @return boolean
